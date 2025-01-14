@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Jessie Maier" />
+
+
+<title>ProActive</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+border-bottom: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic tfoot tr td {
+border: 0;
+}
+.lightable-classic tfoot tr:first-child td {
+border-top: 0.14em solid #111111;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+border-bottom: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 tfoot tr td {
+border: 0;
+}
+.lightable-classic-2 tfoot tr:first-child td {
+border-top: 3px double #111111;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material tfoot tr td {
+border: 0;
+}
+.lightable-material tfoot tr:first-child td {
+border-top: 1px solid #EEE;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark tfoot tr td {
+border: 0;
+}
+.lightable-material-dark tfoot tr:first-child td {
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper tfoot tr td {
+border: 0;
+}
+.lightable-paper tfoot tr:first-child td {
+border-top: 1px solid #00000020;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">ProActive</h1>
+<h4 class="author">Jessie Maier</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#installation" id="toc-installation">Installation</a>
+<ul>
+<li><a href="#cran-install" id="toc-cran-install">CRAN install</a></li>
+<li><a href="#github-install" id="toc-github-install">GitHub
+install</a></li>
+</ul></li>
+<li><a href="#input-data" id="toc-input-data">Input data</a>
+<ul>
+<li><a href="#pileups" id="toc-pileups">Pileups</a></li>
+<li><a href="#gff-tsv" id="toc-gff-tsv">gff TSV</a></li>
+</ul></li>
+<li><a href="#proactive" id="toc-proactive">ProActive()</a>
+<ul>
+<li><a href="#function-components" id="toc-function-components">Function
+components</a>
+<ul>
+<li><a href="#chunking" id="toc-chunking">Chunking</a></li>
+<li><a href="#filtering" id="toc-filtering">Filtering</a></li>
+<li><a href="#changing-pileup-windowsize" id="toc-changing-pileup-windowsize">Changing pileup windowSize</a></li>
+<li><a href="#pattern-matching" id="toc-pattern-matching">Pattern-matching</a></li>
+<li><a href="#calculating-elevation-ratios" id="toc-calculating-elevation-ratios">Calculating elevation
+ratios</a></li>
+<li><a href="#extracting-gene-annotations-in-elevatedgapped-regions" id="toc-extracting-gene-annotations-in-elevatedgapped-regions">Extracting
+gene annotations in elevated/gapped regions</a></li>
+</ul></li>
+<li><a href="#usage" id="toc-usage">Usage</a></li>
+<li><a href="#argumentsparameters" id="toc-argumentsparameters">Arguments/parameters</a></li>
+<li><a href="#output" id="toc-output">Output</a></li>
+</ul></li>
+<li><a href="#plotproactiveresults" id="toc-plotproactiveresults">plotProActiveResults()</a>
+<ul>
+<li><a href="#function-components-1" id="toc-function-components-1">Function components</a>
+<ul>
+<li><a href="#re-building-pattern-matches" id="toc-re-building-pattern-matches">Re-building
+pattern-matches</a></li>
+<li><a href="#plotting-read-coverage-and-associated-pattern-matches" id="toc-plotting-read-coverage-and-associated-pattern-matches">Plotting
+read coverage and associated pattern-matches</a></li>
+</ul></li>
+<li><a href="#usage-1" id="toc-usage-1">Usage</a></li>
+<li><a href="#argumentsparameters-1" id="toc-argumentsparameters-1">Arguments/parameters</a></li>
+<li><a href="#output-1" id="toc-output-1">Output</a>
+<ul>
+<li><a href="#view-select-metagenome-plots" id="toc-view-select-metagenome-plots">View select metagenome
+plots</a></li>
+<li><a href="#view-select-genome-plots" id="toc-view-select-genome-plots">View select genome plots</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#session-information" id="toc-session-information">Session
+Information</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p><code>ProActive</code> automatically detects regions of gapped and
+elevated read coverage using a 2D pattern-matching algorithm.
+<code>ProActive</code> can detect, characterize and visualize read
+coverage patterns in both genomes and metagenomes. Optionally, users may
+provide gene predictions associated with their genome or metagenome in
+the form of a .gff file. In this case, <code>ProActive</code> will
+generate an additional output table containing the gene predictions
+found within the detected regions of gapped and elevated read
+coverage.</p>
+<p>Analyzing coverage data is important because gaps or elevations in
+coverage can provide insight into a community’s (metagenome) or
+organism’s (genome) genetic activity, for example-</p>
+<p>Elevations in read coverage can be an indication of highly active
+and/or abundant mobile genetic elements (MGEs). MGEs that are actively
+replicating or are highly abundant may generate more sequencing reads
+than the rest of their host bacterium’s genome thus creating a region of
+elevated read coverage at the element’s insertion site(s).</p>
+<p>Gaps in read coverage can indicate genetic heterogeneity in a
+bacterial population. Sub-populations of bacteria with and without
+specific gene sequences may form gaps or dips in mapped read coverages.
+Genetic regions with high mutation rates may also generate gaps in read
+coverage.</p>
+<p><strong>Note:</strong> The read coverage pattern-matching employed by
+<code>ProActive</code> is only as good as the provided data. There are
+other non-biological situations that can create gaps or elevations in
+read coverage. For example, chimeric assemblies or contaminants can
+create odd read coverage artifacts. Because of this, ProActive is best
+used as a screening method to identify genetic regions for further
+investigation.</p>
+</div>
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<div id="cran-install" class="section level2">
+<h2>CRAN install</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;ProActive&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(ProActive)</span></code></pre></div>
+</div>
+<div id="github-install" class="section level2">
+<h2>GitHub install</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;devtools&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;jlmaier12/ProActive&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">library</span>(ProActive)</span></code></pre></div>
+</div>
+</div>
+<div id="input-data" class="section level1">
+<h1>Input data</h1>
+<div id="pileups" class="section level2">
+<h2>Pileups</h2>
+<p>ProActive detects read coverage patterns using a pattern-matching
+algorithm that operates on pileup files. A pileup file is a file format
+where each row summarizes the ‘pileup’ of reads at specific genomic
+locations. Pileup files can be used to generate a rolling mean of read
+coverages and associated base pair positions which reduces data size
+while preserving read coverage patterns. <strong>ProActive requires that
+input pileups files</strong> <strong>be generated using a 100 bp
+window/bin size.</strong></p>
+<p>Pileup files can be generated by mapping sequencing reads to a
+metagenome or genome fasta file. <strong>Read mapping should be
+performed using a high</strong> <strong>minimum identity (0.97 or
+higher) and random mapping of ambiguous reads.</strong> The pileup files
+needed for ProActive are generated using the .bam files produced during
+read mapping.</p>
+<p>Some read mappers, like <a href="https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbmap-guide/">BBMap</a>,
+allow for the generation of pileup files in the <a href="https://github.com/BioInfoTools/BBMap/blob/master/sh/bbmap.sh"><code>bbmap.sh</code></a>
+command with use of the <code>bincov</code> output with the
+<code>covbinsize=100</code> parameter/argument. <strong>Otherwise,
+BBMap’s</strong> <strong><a href="https://github.com/BioInfoTools/BBMap/blob/master/sh/pileup.sh"><code>pileup.sh</code></a></strong>
+<strong>can convert .bam files produced by any read mapper to pileup
+files compatible</strong> <strong>with ProActive using the
+<code>bincov</code> output with <code>binsize=100</code>.</strong></p>
+<p><strong>Pileup files must use a 100 bp window/bin size for the
+rolling mean!</strong></p>
+<p><strong>The input pileup file for metagenomes must have the following
+format:</strong></p>
+<p>Dataframe with four columns:</p>
+<ul>
+<li>V1: Contig accession</li>
+<li>V2: Mapped read coverage values averaged over 100 bp windows</li>
+<li>V3: Starting position (bp) of each 100 bp window. Restarts from 100
+at the start of each new contig.</li>
+<li>V4: Starting position (bp) of each 100 bp window. Does NOT restart
+at the start of each new contig.</li>
+</ul>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+V1
+</th>
+<th style="text-align:right;">
+V2
+</th>
+<th style="text-align:right;">
+V3
+</th>
+<th style="text-align:right;">
+V4
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+NODE_1911 length_44214_cov_4.82142_ID_9560073
+</td>
+<td style="text-align:right;">
+54.66
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+175075473
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911 length_44214_cov_4.82142_ID_9560073
+</td>
+<td style="text-align:right;">
+59.13
+</td>
+<td style="text-align:right;">
+200
+</td>
+<td style="text-align:right;">
+175075573
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911 length_44214_cov_4.82142_ID_9560073
+</td>
+<td style="text-align:right;">
+53.99
+</td>
+<td style="text-align:right;">
+300
+</td>
+<td style="text-align:right;">
+175075673
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911 length_44214_cov_4.82142_ID_9560073
+</td>
+<td style="text-align:right;">
+54.69
+</td>
+<td style="text-align:right;">
+400
+</td>
+<td style="text-align:right;">
+175075773
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911 length_44214_cov_4.82142_ID_9560073
+</td>
+<td style="text-align:right;">
+54.40
+</td>
+<td style="text-align:right;">
+500
+</td>
+<td style="text-align:right;">
+175075873
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911 length_44214_cov_4.82142_ID_9560073
+</td>
+<td style="text-align:right;">
+52.11
+</td>
+<td style="text-align:right;">
+600
+</td>
+<td style="text-align:right;">
+175075973
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note that the format for a genome pileup will be slightly
+different! The third</strong> <strong>column (V3) does not restart and
+the fourth column (V4) starts from 0. ProActive</strong>
+<strong>accounts for the differences in pileup formats between genomes
+and metagenomes.</strong></p>
+<p>Users may also use the ‘sampleMetagenomePileup’ and
+‘sampleGenomePileup’ files that come pre-loaded with ProActive as
+references for proper input file format.</p>
+</div>
+<div id="gff-tsv" class="section level2">
+<h2>gff TSV</h2>
+<p>Optionally, ProActive will accept a .gff file as additional input.
+The .gff file must be associated with the same metagenome or genome used
+to create your pileup file. The .gff file should be a TSV and should
+follow the same general format described <a href="https://en.wikipedia.org/wiki/General_feature_format#:~:text=In%20bioinformatics%2C%20the%20general%20feature,DNA%2C%20RNA%20and%20protein%20sequences.">here</a>.</p>
+<strong>The input .gff file must have the following format
+exactly:</strong>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+V1
+</th>
+<th style="text-align:left;">
+V2
+</th>
+<th style="text-align:left;">
+V3
+</th>
+<th style="text-align:right;">
+V4
+</th>
+<th style="text-align:right;">
+V5
+</th>
+<th style="text-align:left;">
+V6
+</th>
+<th style="text-align:left;">
+V7
+</th>
+<th style="text-align:left;">
+V8
+</th>
+<th style="text-align:left;">
+V9
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+318
+</td>
+<td style="text-align:right;">
+1166
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164175;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164175;product=hypothetical
+protein
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+1198
+</td>
+<td style="text-align:right;">
+1938
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164176;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164176;product=hypothetical
+protein
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+1938
+</td>
+<td style="text-align:right;">
+2582
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164177;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164177;product=hypothetical
+protein
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+2722
+</td>
+<td style="text-align:right;">
+3561
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164178;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164178;product=hypothetical
+protein
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+3671
+</td>
+<td style="text-align:right;">
+4063
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164179;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164179;product=hypothetical
+protein
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+4128
+</td>
+<td style="text-align:right;">
+4670
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164180;eC_number=1.11.1.1;Name=rbr1_24;db_xref=COG:COG1592;gene=rbr1_24;inference=ab
+initio prediction:Prodigal:002006,similar to AA
+sequence:UniProtKB:Q97FZ9;locus_tag=NJKKNKEE_164180;product=Rubrerythrin-1
+</td>
+</tr>
+</tbody>
+</table></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<p>(<strong>Hint</strong>- if you are using a gff file output by <a href="https://github.com/tseemann/prokka">PROKKA</a>, you may need to
+remove some unnecessary (for ProActive) lines of text at the top of the
+file. There are various ways one can remove these additional lines,
+however, a nice command-line solution is:)</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">grep</span> ^COMMONID metagenomeAnnots.gff <span class="op">&gt;</span> metagenomeAnnotsForProActive.gff</span></code></pre></div>
+<p>The ‘COMMONID’ should be a value that your contig or genome
+accessions start with that is the same across all the rows. For example,
+the ‘COMMONID’ for the contig accessions in the sampleMetagenomegffTSV
+displayed above could be “NODE” since all the accessions start with
+“NODE”.</p>
+</div>
+</div>
+<div id="proactive" class="section level1">
+<h1>ProActive()</h1>
+<p><code>ProActive()</code> is the main function in the ProActive R
+package. This function filters contigs/chunks based on length and read
+coverage, performs pattern-matching to detect gaps and elevations in
+read coverage, and identifies start and stop positions and sizes of
+pattern-matches.</p>
+<div id="function-components" class="section level2">
+<h2>Function components</h2>
+<div id="chunking" class="section level3">
+<h3>Chunking</h3>
+<p>Currently, <code>ProActive()</code> can only detect one gap or
+elevation pattern per contig. Until <code>ProActive()</code> is able to
+detect multiple read coverage patterns per contig, we rely on ‘chunking’
+large contig into smaller subsets (defined by <code>chunkSize</code>) so
+that pattern-matching can be performed on each chunk as if it were an
+individual contig. The chunking mechanism is what allows
+<code>ProActive()</code> to pattern-match on genomes. When
+contigs/genomes are chunked, they are assigned a sequential value to
+link chunks back together (i.e. “NODE_1_chunk_1, NODE_1_chunk_2,
+NODE_1_chunk_3, …). Note that the remaining ‘chunk’ of a contig/genome
+may not be long enough to perform pattern-matching on. Chunks too small
+for pattern-matching will be put in the output FilteredOut table. If a
+chunk splits a gap or elevation pattern in half,
+<code>ProActive()</code> will attempt to detect this and report it to
+the user as a ‘possible pattern-match continuity’ between contig/genome
+chunks. Pattern-match continuity is detected when two sequential chunks
+have a partial elevation/gap pattern going off the right and left side
+of the chunks, respectively.</p>
+</div>
+<div id="filtering" class="section level3">
+<h3>Filtering</h3>
+<p>Contigs/chunks that are too short or have little to no read coverage
+are filtered out prior to pattern-matching. <code>ProActive()</code>
+filters out contigs/chunks that do not have at least 10x coverage on a
+total of 5,000 bp across the whole contig/chunk. The read coverage
+filtering was done in this way to avoid filtering out long
+contigs/chunks with small elevations in read coverage that might get
+removed if filtering was done with read coverage averages or medians.
+Additionally, contigs/chunks less than 30,000 bp are filtered out by
+default, however this can be changed with the
+<code>minContigLength</code> parameter which can be set to a minimum of
+25,000 bp. <strong>If you would like to reduce the size of your input
+metagenome pileup file for</strong> <strong><code>ProActive()</code>,
+consider pre-filtering your assembly for contigs greater than</strong>
+<strong>25,000 bp prior to read mapping!</strong></p>
+</div>
+<div id="changing-pileup-windowsize" class="section level3">
+<h3>Changing pileup windowSize</h3>
+<p>The input pileup files have 100 bp windows in which the mapped read
+coverage is averaged over. <code>ProActive()</code> increases the window
+size prior to pattern-matching by averaging the read coverages over a
+value specified with <code>windowSize</code>. In many cases, read
+coverage patterns don’t require the resolution that 100 bp windows
+provide, however, starting with a 100 bp windowSize means the higher
+resolution is available if needed. While users can use the 100 bp
+<code>windowSize</code> for <code>ProActive()</code>, the processing
+time will be increased <strong>significantly</strong> and noisy data may
+interfere with pattern-matching. We find that the default 1,000 bp
+<code>windowSize</code> provides a nice balance between processing time
+and read coverage pattern resolution. If you’d like more resolution than
+the 1,000 bp <code>windowSize</code> provides, consider dropping the
+<code>windowSize</code> to 500. If you’d like fine scale read coverage
+resolution, consider viewing the contigs/genome with a software like
+Integrative Genomics Viewer <a href="https://github.com/igvteam/igv">IGV</a>.</p>
+</div>
+<div id="pattern-matching" class="section level3">
+<h3>Pattern-matching</h3>
+<p><code>ProActive()</code> detects read coverage patterns using a 2D
+pattern-matching algorithm. Several predefined patterns, described
+below, are built using the specific length and read coverage values of
+the contig/chunk being assessed. Patterns are translated across each
+contig/chunk in 1,000 bp sliding windows and at each translation, a
+pattern-match score is calculated by taking the mean absolute difference
+of the read coverage and the pattern values. The smaller the
+match-score, the better the pattern-match. After a pattern is fully
+translated across a contig/chunk, certain aspects of the pattern are
+changed (i.e. height, base, width) and translation is repeated. This
+process of translation and pattern re-scaling is repeated until a large
+number of pattern variations are tested. After pattern-matching is
+complete, the pattern associated with the best match-score is used for
+contig/chunk classification. Contigs/chunks are classified as
+‘Elevation’, ‘Gap’, or ‘NoPattern’ during pattern-matching.</p>
+<div id="elevation-pattern" class="section level4">
+<h4>Elevation pattern:</h4>
+<p>The ‘elevation’ class is defined by a ‘block’ pattern which
+represents the read covarage pattern formed when reads from a highly
+active/abundant MGE map back to its respective integration site in the
+host/originating genome. During pattern-matching, the height (max), base
+(min) and width are altered and all pattern variations are translated
+across the contig/chunk. The block pattern width never get smaller than
+10,000 bp by default, however this can be changed with the
+<code>minSize</code> parameter.</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7DAAAOwwHHb6hkAAACxElEQVR4nO3WUQqCUBRFUZv/pPuKhKyN2lOjtb8iOHBdEjTd9LHp7AOuHqAIUAQoAhQBimZAk+YBigBFi0ADfsO/GaAIUAQoAhQBigBFgKIBQIf/kcuuBXS2xlIXA9pxzph2vu/Hp6UvD75mUIAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoAVTtuApRTQDEFFFNAMQUUU0AxBRRTQDEFFFNAMQUUU0AxBRRTQDEFFFNAMQUUU0AxBRRTQDEFFFNAMQUUU0AxBRRTQDEFFFNAMQUUU0AxBRRTQDEFFFNAMQUUU0AxBRRTQDEFFFNAMf0y0BV9AFWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAFXbrwKUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUS0CxBBRLQLEEFEtAsQQUywKa1rb1lJFtf4bvAx3ywGsbCfTnAYoARYAiQBGgCFAEKAIUAYreAekZoAhQ9AqkpQBFgCJAEaAIUAQoAhQBigBFd2YYMc0dvxbZAAAAAElFTkSuQmCC" width="50%" /></p>
+</div>
+<div id="gap-pattern" class="section level4">
+<h4>Gap pattern:</h4>
+<p>The ‘gap’ class is essentially the reverse of the ‘elevation’ class.
+It is defined by a gapped block pattern which represents a depression in
+read coverage caused by genetic heterogeneity at a specific region
+leading to poor read mapping. The same pattern-matching steps
+(alteration of pattern and pattern translation) used for the elevation
+pattern are used for the gap pattern.</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAC3klEQVR4nO3W0QqCQBRFUfv/n+4xIXPTqDTVOu8b5i4QXG62u+XTD5h9gGKAYoBigGKAYiugxdYDFAMU2wS64Bv+zgGKAYoBigGKAYoBigGKNdDYX9VsG77idKA5hcaPaKC3nzKcXrjxVwHKElCUgKIEFCWgKAFFCShKQFECihJQlICiBBQloCgBRQkoSkBRAooSUJSAogQUJaAoAUUJKEpAUQKKElCUgKIEFCWgKAFFCShKQFECihJQlICiBBQloCgBRQkoSkBRAooSUJSAogQUJaAoAUUJKEpAUQKKElCUgKIEFCWgKAFFCShKQFECihJQlICiBBQloCgBRQkoSkBRAooSUJSAogQUJaAoAUUJKEpAUQKKElCUgKIEFCWgKAFFCShKQFH+A9ChewBFCihSQJECihRQpIAiBRQpoEgBRQooUkCRAooUUKSAIgUUKaBIAUUKKFJAkQKKFFCkgCIFFCmgSAFFCihSQJECihRQpIAiBRQpoEgBRQooUkCRAooUUKSAIgUUKaBITwaaUghQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDFAMUAxQDND+jp0DKFpA0QKKFlC0gKIFFC2gaAFFCyhaQNECihZQtICiBRQtoGgBRQsoWkDRAooWULSAogUULaBoAUULKFpA0QKKFlC0gKIFFC2gaAFFCyhaQNECihZQtICiBRQtoGgBRQsoWkDRAooWULSAogUULaBoAUULKFpA0QKKFlC0gKIFFC2gaAFFCyhaQNECihZQtICiBRQtoGgBRQsoWkDRAooWULSAogUULaBoAUULKFpA0QKKFlC0gKIFFC2gaM8HmnCA9jd+zQVAPzZAMUAxQDFAMUAxQDFAMUAxQLFXQPYYoBig2DOQbQ1QDFAMUAxQDFAMUAxQDFAMUOwOycUxzYy3bDMAAAAASUVORK5CYII=" width="50%" /></p>
+</div>
+<div id="elevationgap-pattern" class="section level4">
+<h4>Elevation/Gap pattern:</h4>
+<p>Elevations and gaps that trail off one side of a contig/chunk are
+hard to classify as the read coverage could be seen as a gap or
+elevation depending on how you’re looking at it. Our solution to this
+problem was to classify the contig/chunk as ‘gap’ if the elevated region
+was greater than 50% of the length of the contig/chunk. Otherwise the
+classification is ‘elevated’.</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7DAAAOwwHHb6hkAAACrElEQVR4nO3WMQrDMBQFQef+l05l4hA7WyX6htlKqHoMCLQ99LVt9YDpAYoARYAiQBGg6AC06RigCFB0CvSDN3zPAEWAIkARoAhQBCgCFDXQ3/9le391uGww0AyhBlrWiBGAKkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWAIkARoAhQBCgCFAGKAEWDgWYIAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYoARYAiQBGgCFAEKAIUAYomA40QApQbAMUGQLEBUGwAFBsAxQZAsQFQbAAUGwDFBkCxAVBsABQbAMUGQLEBUGwAFBsAxQZAsQFQbAAUGwDFBkCxAVBsABQbAMUGQLEBUGwAFBsAxQZAsQFQbAAUGwDFBkCxAVBsABQbAMUGQLEBUGwAFBsAxQZAsQFQbAAUGwDFBkCxAVBsABQbAMUGQLEBUGwAFBsAxQZAsQFQbAAUGwDFBkCxAVBsABQbAMUGQLEBUGwAFBsAxQZAsQFQbAAUGwDFBkCxAVBsABQbAMUGQLEBUGwAFBsAxQZAsWE00KreNuyns8u1AbpBgCJAEaAIUAQoAhQBigBFgKIrIL0CFAGKPoF0FqAIUAQoAhQBigBFgCJAEaDoCYxpM7Ox+s6XAAAAAElFTkSuQmCC" width="50%" /></p>
+</div>
+<div id="nopattern" class="section level4">
+<h4>noPattern:</h4>
+<p>Since the best pattern-match for each contig/chunk is determined by
+comparing match-scores amongst all pattern-variations from all pattern
+classes, we needed a ‘negative control’ pattern to compare against. The
+‘NoPattern’ ‘pattern’ serves as a negative control by matching to
+contigs/chunks with no read coverage patterns. We made two NoPattern
+patterns which consist of a horizontal line the same length as the
+contig/chunk being assessed at either the contig/chunk’s average or
+median read coverage. This pattern is not re-scaled or translated in any
+way.</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAABlBMVEUAAAD///+l2Z/dAAAACXBIWXMAAA7DAAAOwwHHb6hkAAACS0lEQVR4nO3TyQmAQAAEwTX/pH0qeDQ+RMWqCIaGGROnxtMD3k6gIFAQKAgUBAqrQIM1gYJAYTfQDR/+JoGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFDoQOOPBApXAv2cQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQEGgIFAQKAgUBAoCBYGCQOEoEAuBgkBhG4g9AgWBgkBBoCBQECgIFAQKAoUZ+/w1lqrgeukAAAAASUVORK5CYII=" width="50%" /></p>
+</div>
+</div>
+<div id="calculating-elevation-ratios" class="section level3">
+<h3>Calculating elevation ratios</h3>
+<p>Every gap and elevation classification receives an elevation ratio
+which is simply the pattern-match’s maximum value divided by the minimum
+value. For elevation classifications, you can think of the elevation
+ratio as ‘the elevated region has X times greater read coverage than the
+non-elevated region’. Conversely, for gap classifications, the elevation
+ratio can be thought of as ‘the gapped region has X times less read
+coverage than the non-gapped region’.</p>
+</div>
+<div id="extracting-gene-annotations-in-elevatedgapped-regions" class="section level3">
+<h3>Extracting gene annotations in elevated/gapped regions</h3>
+<p>If a .gff file is provided, then <code>ProActive()</code> will
+extract the gene annotations found within the gapped and elevated
+pattern-match regions and provide them to the user in an output table
+(GeneAnnotTable). An additional column will be added with the
+classification information (gap or elevation) associated with the gene
+annotations. If the input .gff file contains a gene ‘product’ field in
+the attributes column (9th column in the dataframe), then
+<code>ProActive()</code> will extract the product information into a
+separate column for easy visualization and filtering of annotations of
+interest.</p>
+</div>
+</div>
+<div id="usage" class="section level2">
+<h2>Usage</h2>
+<p><strong>Default arguments in metagenome mode:</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>ProActiveOutputMetagenome <span class="ot">&lt;-</span> <span class="fu">ProActive</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">pileup =</span> sampleMetagenomePileup,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">&quot;metagenome&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">gffTSV =</span> sampleMetagenomegffTSV</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; Preparing input file for pattern-matching...</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; Starting pattern-matching...</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; A quarter of the way done with pattern-matching</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; Half of the way done with pattern-matching</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; Almost done with pattern-matching!</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; Summarizing pattern-matching results</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; Finding gene predictions in elevated or gapped regions of read coverage...</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; Finalizing output</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; Execution time: 2.13secs</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 0 contigs were filtered out based on low read coverage</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; 0 contigs were filtered out based on length (&lt; minContigLength)</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; Elevation       Gap NoPattern </span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt;         3         3         1</span></span></code></pre></div>
+<p><strong>Default arguments in genome mode:</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>ProActiveOutputGenome <span class="ot">&lt;-</span> <span class="fu">ProActive</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">pileup =</span> sampleGenomePileup,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">&quot;genome&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">gffTSV =</span> sampleGenomegffTSV</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; Preparing input file for pattern-matching...</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; Starting pattern-matching...</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; A quarter of the way done with pattern-matching</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; Half of the way done with pattern-matching</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; Almost done with pattern-matching!</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; Summarizing pattern-matching results</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; Finding gene predictions in elevated or gapped regions of read coverage...</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; Finalizing output</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; Execution time: 29.12secs</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; 0 contigs were filtered out based on low read coverage</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; 0 contigs were filtered out based on length (&lt; minContigLength)</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; Elevation       Gap NoPattern </span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt;        25         3        21</span></span></code></pre></div>
+<p><strong>Note that ProActive <em>can</em> be run without the gffTSV
+file!</strong></p>
+</div>
+<div id="argumentsparameters" class="section level2">
+<h2>Arguments/parameters</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">ProActive</span>(pileup,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  mode,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  gffTSV,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">windowSize =</span> <span class="dv">1000</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">minSize =</span> <span class="dv">10000</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">maxSize =</span> <span class="cn">Inf</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="at">minContigLength =</span> <span class="dv">30000</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="at">chunkSize =</span> <span class="dv">50000</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="at">chunkContigs =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="at">IncludeNoPatterns =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  saveFilesTo</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>)</span></code></pre></div>
+<ul>
+<li><strong><code>pileup</code></strong>: A .txt file containing mapped
+sequencing read coverages averaged over 100 bp windows/bins.</li>
+<li><strong><code>mode</code></strong>: Either “genome” or
+“metagenome”</li>
+<li><strong><code>gffTSV</code></strong>: Optional, a .gff file (TSV)
+containing gene predictions associated with the .fasta file used to
+generate the pileup.</li>
+<li><strong><code>windowSize</code></strong>: The number of basepairs to
+average read coverage values over. Options are 100, 200, 500, 1000 ONLY.
+Default is 1000.</li>
+<li><strong><code>minSize</code></strong>: The minimum size (in bp) of
+elevation or gap patterns. Default is 10000.</li>
+<li><strong><code>maxSize</code></strong>: The maximum size (in bp) of
+elevation or gap patterns. Default is NA (i.e. no maximum).</li>
+<li><strong><code>minContigLength</code></strong>: The minimum
+contig/chunk size (in bp) to perform pattern-matching on. Default is
+25000.</li>
+<li><strong><code>chunkSize</code></strong>: If
+<code>mode</code>=“genome” OR if <code>mode</code>=“metagenome” and
+<code>chunkContigs</code>=TRUE, chunk the genome or contigs,
+respectively, into smaller subsets for pattern-matching.
+<code>chunkSize</code> determines the size (in bp) of each ‘chunk’.
+Default is 100000.</li>
+<li><strong><code>chunkContigs</code></strong>: TRUE or FALSE, If TRUE
+and <code>mode</code>=“metagenome”, contigs longer than the
+<code>chunkSize</code> will be ‘chunked’ into smaller subsets and
+pattern-matching will be performed on each subset. Default is
+FALSE.</li>
+<li><strong><code>IncludeNoPatterns</code></strong>: TRUE or FALSE, If
+TRUE the noPattern pattern-matches will be included in the ProActive
+PatternMatches output list. If you would like to visualize the noPattern
+pattern-matches in <code>plotProActiveResults()</code>, this should be
+set to TRUE.</li>
+<li><strong><code>verbose</code></strong>: TRUE or FALSE. Print progress
+messages to console. Default is TRUE.</li>
+<li><strong><code>saveFilesTo</code></strong>: Optional, Provide a path
+to the directory you wish to save output to. A folder will be made
+within the provided directory to store results.</li>
+</ul>
+</div>
+<div id="output" class="section level2">
+<h2>Output</h2>
+<p>The output of <code>ProActive</code> is a list containing six
+objects:</p>
+<ol style="list-style-type: decimal">
+<li>SummaryTable: A table containing all pattern-matching
+classifications</li>
+<li>CleanSummaryTable: A table containing only gap and elevation
+pattern-match classifications (i.e. noPattern classifications
+removed)</li>
+<li>PatternMatches: A list object containing information needed to
+visualize the pattern-matches in
+<code>plotProActiveResults()</code></li>
+<li>FilteredOut: A table containing contigs/chunks that were filtered
+out for being too small or having too low read coverage</li>
+<li>Arguments: A list object containing arguments used for
+pattern-matching (windowSize, mode, chunkSize, chunkContigs)</li>
+<li>GeneAnnotTable: A table containing gene predictions associated with
+elevated or gapped regions in pattern-matches</li>
+</ol>
+<p>Save the desired list item to a new variable using its associated
+name.</p>
+<p><strong>Metagenome results summary table:</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>MetagenomeCleanSummaryTable <span class="ot">&lt;-</span> ProActiveOutputMetagenome<span class="sc">$</span>CleanSummaryTable</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+refName
+</th>
+<th style="text-align:left;">
+classification
+</th>
+<th style="text-align:right;">
+elevRatio
+</th>
+<th style="text-align:right;">
+startPos
+</th>
+<th style="text-align:right;">
+endPos
+</th>
+<th style="text-align:right;">
+matchSize
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+<td style="text-align:right;">
+3.349296
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+17000
+</td>
+<td style="text-align:right;">
+16000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1583
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+<td style="text-align:right;">
+2.450013
+</td>
+<td style="text-align:right;">
+42000
+</td>
+<td style="text-align:right;">
+51000
+</td>
+<td style="text-align:right;">
+9000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1884
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+<td style="text-align:right;">
+3.319514
+</td>
+<td style="text-align:right;">
+36000
+</td>
+<td style="text-align:right;">
+44000
+</td>
+<td style="text-align:right;">
+8000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1255
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+<td style="text-align:right;">
+5.318072
+</td>
+<td style="text-align:right;">
+1000
+</td>
+<td style="text-align:right;">
+20000
+</td>
+<td style="text-align:right;">
+19000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_368
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+<td style="text-align:right;">
+2.690172
+</td>
+<td style="text-align:right;">
+26000
+</td>
+<td style="text-align:right;">
+56000
+</td>
+<td style="text-align:right;">
+30000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_617
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+<td style="text-align:right;">
+1.784556
+</td>
+<td style="text-align:right;">
+34000
+</td>
+<td style="text-align:right;">
+82000
+</td>
+<td style="text-align:right;">
+48000
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Subset of genome results summary table:</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>GenomeCleanSummaryTable <span class="ot">&lt;-</span> <span class="fu">head</span>(ProActiveOutputGenome<span class="sc">$</span>CleanSummaryTable)</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+refName
+</th>
+<th style="text-align:left;">
+classification
+</th>
+<th style="text-align:right;">
+elevRatio
+</th>
+<th style="text-align:right;">
+startPos
+</th>
+<th style="text-align:right;">
+endPos
+</th>
+<th style="text-align:right;">
+matchSize
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+NC_003197.2_chunk_3
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+<td style="text-align:right;">
+1.609512
+</td>
+<td style="text-align:right;">
+83000
+</td>
+<td style="text-align:right;">
+100000
+</td>
+<td style="text-align:right;">
+17000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+NC_003197.2_chunk_4
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+<td style="text-align:right;">
+1.351684
+</td>
+<td style="text-align:right;">
+39000
+</td>
+<td style="text-align:right;">
+51000
+</td>
+<td style="text-align:right;">
+12000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+NC_003197.2_chunk_7
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+<td style="text-align:right;">
+1.343521
+</td>
+<td style="text-align:right;">
+92000
+</td>
+<td style="text-align:right;">
+100000
+</td>
+<td style="text-align:right;">
+8000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+NC_003197.2_chunk_8
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+<td style="text-align:right;">
+1.723227
+</td>
+<td style="text-align:right;">
+84000
+</td>
+<td style="text-align:right;">
+94000
+</td>
+<td style="text-align:right;">
+10000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+NC_003197.2_chunk_10
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+<td style="text-align:right;">
+1.887571
+</td>
+<td style="text-align:right;">
+64000
+</td>
+<td style="text-align:right;">
+100000
+</td>
+<td style="text-align:right;">
+36000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+NC_003197.2_chunk_12
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+<td style="text-align:right;">
+1.293144
+</td>
+<td style="text-align:right;">
+34000
+</td>
+<td style="text-align:right;">
+44000
+</td>
+<td style="text-align:right;">
+10000
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Subset of GeneAnnotTable for metagenome results:</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>MetagenomeResultsGenePredictTable <span class="ot">&lt;-</span> <span class="fu">head</span>(ProActiveOutputMetagenome<span class="sc">$</span>GeneAnnotTable)</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+seqid
+</th>
+<th style="text-align:left;">
+source
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:right;">
+start
+</th>
+<th style="text-align:right;">
+end
+</th>
+<th style="text-align:left;">
+score
+</th>
+<th style="text-align:left;">
+strand
+</th>
+<th style="text-align:left;">
+phase
+</th>
+<th style="text-align:left;">
+attributes
+</th>
+<th style="text-align:left;">
+geneproduct
+</th>
+<th style="text-align:left;">
+Classification
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+318
+</td>
+<td style="text-align:right;">
+1166
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164175;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164175;product=hypothetical
+protein
+</td>
+<td style="text-align:left;">
+hypothetical protein
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+1198
+</td>
+<td style="text-align:right;">
+1938
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164176;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164176;product=hypothetical
+protein
+</td>
+<td style="text-align:left;">
+hypothetical protein
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+1938
+</td>
+<td style="text-align:right;">
+2582
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164177;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164177;product=hypothetical
+protein
+</td>
+<td style="text-align:left;">
+hypothetical protein
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+2722
+</td>
+<td style="text-align:right;">
+3561
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164178;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164178;product=hypothetical
+protein
+</td>
+<td style="text-align:left;">
+hypothetical protein
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+3671
+</td>
+<td style="text-align:right;">
+4063
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164179;inference=ab initio
+prediction:Prodigal:002006;locus_tag=NJKKNKEE_164179;product=hypothetical
+protein
+</td>
+<td style="text-align:left;">
+hypothetical protein
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NODE_1911
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+4128
+</td>
+<td style="text-align:right;">
+4670
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=NJKKNKEE_164180;eC_number=1.11.1.1;Name=rbr1_24;db_xref=COG:COG1592;gene=rbr1_24;inference=ab
+initio prediction:Prodigal:002006,similar to AA
+sequence:UniProtKB:Q97FZ9;locus_tag=NJKKNKEE_164180;product=Rubrerythrin-1
+</td>
+<td style="text-align:left;">
+Rubrerythrin-1
+</td>
+<td style="text-align:left;">
+Elevation
+</td>
+</tr>
+</tbody>
+</table></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<p><strong>Subset of GeneAnnotTable for genome results:</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>GenomeResultsGenePredictTable <span class="ot">&lt;-</span> <span class="fu">head</span>(ProActiveOutputGenome<span class="sc">$</span>GeneAnnotTable)</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+seqid
+</th>
+<th style="text-align:left;">
+source
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:right;">
+start
+</th>
+<th style="text-align:right;">
+end
+</th>
+<th style="text-align:left;">
+score
+</th>
+<th style="text-align:left;">
+strand
+</th>
+<th style="text-align:left;">
+phase
+</th>
+<th style="text-align:left;">
+attributes
+</th>
+<th style="text-align:left;">
+geneproduct
+</th>
+<th style="text-align:left;">
+Classification
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+NC_003197.2_chunk_3
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+82564
+</td>
+<td style="text-align:right;">
+84117
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=LFLNNMPD_00070;eC_number=6.2.1.48;Name=caiC;db_xref=COG:COG0318;gene=caiC;inference=ab
+initio prediction:Prodigal:002006,similar to AA
+sequence:UniProtKB:P31552;locus_tag=LFLNNMPD_00070;product=Crotonobetaine/carnitine–CoA
+ligase
+</td>
+<td style="text-align:left;">
+Crotonobetaine/carnitine–CoA ligase
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NC_003197.2_chunk_3
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+84180
+</td>
+<td style="text-align:right;">
+85397
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=LFLNNMPD_00071;eC_number=2.8.3.21;Name=caiB;db_xref=COG:COG1804;gene=caiB;inference=ab
+initio prediction:Prodigal:002006,similar to AA
+sequence:UniProtKB:P31572;locus_tag=LFLNNMPD_00071;product=L-carnitine
+CoA-transferase
+</td>
+<td style="text-align:left;">
+L-carnitine CoA-transferase
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NC_003197.2_chunk_3
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+85509
+</td>
+<td style="text-align:right;">
+86651
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=LFLNNMPD_00072;eC_number=1.3.8.13;Name=caiA_1;db_xref=COG:COG1960;gene=caiA_1;inference=ab
+initio prediction:Prodigal:002006,similar to AA
+sequence:UniProtKB:P60584;locus_tag=LFLNNMPD_00072;product=Crotonobetainyl-CoA
+reductase
+</td>
+<td style="text-align:left;">
+Crotonobetainyl-CoA reductase
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NC_003197.2_chunk_3
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+86686
+</td>
+<td style="text-align:right;">
+88203
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=LFLNNMPD_00073;Name=caiT;db_xref=COG:COG1292;gene=caiT;inference=ab
+initio prediction:Prodigal:002006,similar to AA
+sequence:UniProtKB:P31553;locus_tag=LFLNNMPD_00073;product=L-carnitine/gamma-butyrobetaine
+antiporter
+</td>
+<td style="text-align:left;">
+L-carnitine/gamma-butyrobetaine antiporter
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NC_003197.2_chunk_3
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+88684
+</td>
+<td style="text-align:right;">
+89454
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=LFLNNMPD_00074;Name=fixA_1;db_xref=COG:COG2086;gene=fixA_1;inference=ab
+initio prediction:Prodigal:002006,similar to AA
+sequence:UniProtKB:P60566;locus_tag=LFLNNMPD_00074;product=Protein FixA
+</td>
+<td style="text-align:left;">
+Protein FixA
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NC_003197.2_chunk_3
+</td>
+<td style="text-align:left;">
+Prodigal:002006
+</td>
+<td style="text-align:left;">
+CDS
+</td>
+<td style="text-align:right;">
+89470
+</td>
+<td style="text-align:right;">
+90411
+</td>
+<td style="text-align:left;">
+.
+</td>
+<td style="text-align:left;">
+<ul>
+<li></td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+ID=LFLNNMPD_00075;Name=fixB_1;db_xref=COG:COG2025;gene=fixB_1;inference=ab
+initio prediction:Prodigal:002006,similar to AA
+sequence:UniProtKB:P31574;locus_tag=LFLNNMPD_00075;product=Protein FixB
+</td>
+<td style="text-align:left;">
+Protein FixB
+</td>
+<td style="text-align:left;">
+Gap
+</td>
+</tr>
+</tbody>
+</table></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="plotproactiveresults" class="section level1">
+<h1>plotProActiveResults()</h1>
+<p><code>plotProActiveResults()</code> allows users to visualize both
+the read coverage and the pattern-match associated with each gap or
+elevation classification.</p>
+<div id="function-components-1" class="section level2">
+<h2>Function components</h2>
+<div id="re-building-pattern-matches" class="section level3">
+<h3>Re-building pattern-matches</h3>
+<p>The <code>ProActive()</code> output contains information needed to
+re-build each pattern-match used for classification. To re-build a
+complete pattern-match for visualization,
+<code>plotProActiveResults()</code> uses the pattern-match’s minimum and
+maximum values and the start and stop positions.</p>
+</div>
+<div id="plotting-read-coverage-and-associated-pattern-matches" class="section level3">
+<h3>Plotting read coverage and associated pattern-matches</h3>
+<p>By default, the read coverage is plotted for each contig/chunk
+classified as having a gap or elevation in read coverage. If you wish to
+see the read coverage for noPattern classifications, be sure to set
+<code>IncludeNoPatterns = TRUE</code> when running
+<code>ProActive()</code>. The pattern-match associated with each
+classification is overlaid on the coverage plot.</p>
+</div>
+</div>
+<div id="usage-1" class="section level2">
+<h2>Usage</h2>
+<p><strong>Default arguments:</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>MetagenomeResultsPlots <span class="ot">&lt;-</span> <span class="fu">plotProActiveResults</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="at">pileup =</span> sampleMetagenomePileup,</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="at">ProActiveResults =</span> ProActiveOutputMetagenome</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>GenomeResultsPlots <span class="ot">&lt;-</span> <span class="fu">plotProActiveResults</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  <span class="at">pileup =</span> sampleGenomePileup,</span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>  <span class="at">ProActiveResults =</span> ProActiveOutputGenome</span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>)</span></code></pre></div>
+<p><strong>Note</strong>- There is no need to set ‘genome’ or
+‘metagenome’ mode. <code>plotProActiveResults()</code> will get this
+information from the <code>ProActive()</code> output.</p>
+</div>
+<div id="argumentsparameters-1" class="section level2">
+<h2>Arguments/parameters</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">plotProActiveResults</span>(pileup,</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  ProActiveResults,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  elevFilter,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  saveFilesTo</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>)</span></code></pre></div>
+<ul>
+<li><strong><code>pileup</code></strong>: A .txt file containing mapped
+sequencing read coverages averaged over 100 bp windows/bins.</li>
+<li><strong><code>ProActiveResults</code></strong>: The output from
+<code>ProActive()</code>.</li>
+<li><strong><code>elevFilter</code></strong>: Optional, only plot
+results with pattern-matches that achieved an elevation ratio (max/min)
+greater than the specified value. Default is no filter.</li>
+<li><strong><code>saveFilesTo</code></strong>: Optional, Provide a path
+to the directory you wish to save output to. A folder will be made
+within the provided directory to store results.</li>
+</ul>
+</div>
+<div id="output-1" class="section level2">
+<h2>Output</h2>
+<p>The output of <code>plotProActiveResults</code> is a list of ggplot
+objects.</p>
+<div id="view-select-metagenome-plots" class="section level3">
+<h3>View select metagenome plots</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>MetagenomeResultsPlots</span></code></pre></div>
+<p><img src="data:image/png;base64,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" width="100%" /><img src="data:image/png;base64,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" width="100%" /><img src="data:image/png;base64,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" width="100%" /></p>
+</div>
+<div id="view-select-genome-plots" class="section level3">
+<h3>View select genome plots</h3>
+<p><strong>Notice the ‘chunk’ information in the plot
+titles</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>GenomeResultsPlots<span class="sc">$</span>NC_003197<span class="fl">.2</span>_chunk_36</span></code></pre></div>
+<p><img src="data:image/png;base64,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" width="100%" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>GenomeResultsPlots<span class="sc">$</span>NC_003197<span class="fl">.2</span>_chunk_8</span></code></pre></div>
+<p><img src="data:image/png;base64,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" width="100%" /></p>
+</div>
+</div>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session Information</h1>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co">#&gt; R version 4.2.1 (2022-06-23 ucrt)</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt; Platform: x86_64-w64-mingw32/x64 (64-bit)</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt; Running under: Windows 10 x64 (build 19045)</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; Matrix products: default</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; locale:</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; [1] LC_COLLATE=C                          </span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; [2] LC_CTYPE=English_United States.utf8   </span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; [3] LC_MONETARY=English_United States.utf8</span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; [4] LC_NUMERIC=C                          </span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; [5] LC_TIME=English_United States.utf8    </span></span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt; attached base packages:</span></span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
+<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a><span class="co">#&gt; [1] dplyr_1.1.4      stringr_1.5.1    ggplot2_3.5.1    kableExtra_1.4.0</span></span>
+<span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a><span class="co">#&gt; [5] ProActive_0.0.2 </span></span>
+<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-22"><a href="#cb16-22" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span id="cb16-23"><a href="#cb16-23" tabindex="-1"></a><span class="co">#&gt;  [1] bslib_0.8.0       compiler_4.2.1    pillar_1.9.0      jquerylib_0.1.4  </span></span>
+<span id="cb16-24"><a href="#cb16-24" tabindex="-1"></a><span class="co">#&gt;  [5] tools_4.2.1       digest_0.6.37     viridisLite_0.4.2 jsonlite_1.8.9   </span></span>
+<span id="cb16-25"><a href="#cb16-25" tabindex="-1"></a><span class="co">#&gt;  [9] evaluate_1.0.1    lifecycle_1.0.4   tibble_3.2.1      gtable_0.3.6     </span></span>
+<span id="cb16-26"><a href="#cb16-26" tabindex="-1"></a><span class="co">#&gt; [13] pkgconfig_2.0.3   rlang_1.1.4       cli_3.6.2         rstudioapi_0.17.1</span></span>
+<span id="cb16-27"><a href="#cb16-27" tabindex="-1"></a><span class="co">#&gt; [17] yaml_2.3.10       xfun_0.49         fastmap_1.2.0     withr_3.0.2      </span></span>
+<span id="cb16-28"><a href="#cb16-28" tabindex="-1"></a><span class="co">#&gt; [21] xml2_1.3.6        knitr_1.49        systemfonts_1.1.0 generics_0.1.3   </span></span>
+<span id="cb16-29"><a href="#cb16-29" tabindex="-1"></a><span class="co">#&gt; [25] vctrs_0.6.5       sass_0.4.9        grid_4.2.1        tidyselect_1.2.1 </span></span>
+<span id="cb16-30"><a href="#cb16-30" tabindex="-1"></a><span class="co">#&gt; [29] svglite_2.1.3     glue_1.8.0        R6_2.5.1          fansi_1.0.6      </span></span>
+<span id="cb16-31"><a href="#cb16-31" tabindex="-1"></a><span class="co">#&gt; [33] rmarkdown_2.29    farver_2.1.2      magrittr_2.0.3    scales_1.3.0     </span></span>
+<span id="cb16-32"><a href="#cb16-32" tabindex="-1"></a><span class="co">#&gt; [37] htmltools_0.5.8.1 colorspace_2.1-1  labeling_0.4.3    utf8_1.2.4       </span></span>
+<span id="cb16-33"><a href="#cb16-33" tabindex="-1"></a><span class="co">#&gt; [41] stringi_1.8.4     munsell_0.5.1     cachem_1.1.0</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
