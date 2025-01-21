@@ -105,21 +105,22 @@ plot1 <- ggplot(dataframe, aes(x = mockpos, y = mockcov)) +
 plot1
 
 ## -----------------------------------------------------------------------------
-ProActiveOutputMetagenome <- ProActive(
+ProActiveOutputMetagenome <- ProActiveDetect(
   pileup = sampleMetagenomePileup,
   mode = "metagenome",
   gffTSV = sampleMetagenomegffTSV
 )
 
 ## -----------------------------------------------------------------------------
-ProActiveOutputGenome <- ProActive(
+ProActiveOutputGenome <- ProActiveDetect(
   pileup = sampleGenomePileup,
   mode = "genome",
   gffTSV = sampleGenomegffTSV
 )
 
 ## ----eval=FALSE---------------------------------------------------------------
-# ProActive(pileup,
+# ProActiveDetect(
+#   pileup,
 #   mode,
 #   gffTSV,
 #   windowSize = 1000,
@@ -179,10 +180,7 @@ GenomeResultsPlots <- plotProActiveResults(
 #   saveFilesTo
 # )
 
-## ----eval=FALSE---------------------------------------------------------------
-# MetagenomeResultsPlots
-
-## ----echo=FALSE, fig.width=6--------------------------------------------------
+## ----fig.width=6--------------------------------------------------------------
 MetagenomeResultsPlots$NODE_1884
 MetagenomeResultsPlots$NODE_368
 MetagenomeResultsPlots$NODE_617
@@ -190,6 +188,47 @@ MetagenomeResultsPlots$NODE_617
 ## ----fig.width=6--------------------------------------------------------------
 GenomeResultsPlots$NC_003197.2_chunk_36
 GenomeResultsPlots$NC_003197.2_chunk_8
+
+## -----------------------------------------------------------------------------
+MetagenomeGeneMatches <- geneAnnotationSearch(
+  ProActiveResults = ProActiveOutputMetagenome, 
+  pileup = sampleMetagenomePileup, 
+  gffTSV = sampleMetagenomegffTSV, 
+  geneOrProduct = "product", 
+  keyWords = c("transport", "chemotaxis")
+  )
+
+## -----------------------------------------------------------------------------
+GenomeGeneMatches <- geneAnnotationSearch(
+  ProActiveResults = ProActiveOutputGenome,
+  pileup =  sampleGenomePileup, 
+  gffTSV = sampleGenomegffTSV, 
+  geneOrProduct = "product", 
+  keyWords = c("ribosomal"), 
+  inGapOrElev = TRUE, 
+  bpRange = 5000
+  )
+
+## ----eval=FALSE---------------------------------------------------------------
+# geneAnnotationSearch(
+#   ProActiveResults,
+#   pileup,
+#   gffTSV,
+#   geneOrProduct,
+#   keyWords,
+#   inGapOrElev = FALSE,
+#   bpRange = 0,
+#   elevFilter,
+#   saveFilesTo,
+#   verbose = TRUE
+#   )
+
+## ----fig.width=6, fig.height=5------------------------------------------------
+MetagenomeGeneMatches$NODE_617
+
+## ----fig.width=6, fig.height=5------------------------------------------------
+GenomeGeneMatches$NC_003197.2_chunk_3
+GenomeGeneMatches$NC_003197.2_chunk_36
 
 ## -----------------------------------------------------------------------------
 sessionInfo()
